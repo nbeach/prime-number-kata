@@ -33,7 +33,6 @@ public class PrimeNumberGeneratorImplTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-
     @Test
     public void generate_returnsOnlyPrimes() {
         new NonStrictExpectations() {{
@@ -48,48 +47,43 @@ public class PrimeNumberGeneratorImplTest {
         }};
 
         List<Integer> actual = primeNumberGenerator.generate(1, 3);
-
-        assertThat(actual.size()).isEqualTo(2);
-        assertThat(actual).contains(1);
-        assertThat(actual).contains(3);
+        assertContainsValues(actual, 1, 3);
     }
 
     @Test
     public void generate_returnsPrimesInOrder() {
         returnTrueForAllIsPrimeCalls();
-
         List<Integer> actual = primeNumberGenerator.generate(1, 3);
-
-        assertThat(actual.size()).isEqualTo(3);
-        assertThat(actual.get(0)).isEqualTo(1);
-        assertThat(actual.get(1)).isEqualTo(2);
-        assertThat(actual.get(2)).isEqualTo(3);
+        assertContainsValuesInOrder(actual, 1, 2, 3);
     }
 
     @Test
     public void generate_acceptsReverseRanges() {
         returnTrueForAllIsPrimeCalls();
-
         List<Integer> actual = primeNumberGenerator.generate(3, 1);
-
-        assertThat(actual.size()).isEqualTo(3);
-        assertThat(actual).contains(1);
-        assertThat(actual).contains(2);
-        assertThat(actual).contains(3);
+        assertContainsValues(actual, 1, 2, 3);
     }
 
     @Test
     public void generate_returnsReverseRangeResultsInForwardOrder() {
         returnTrueForAllIsPrimeCalls();
-
         List<Integer> actual = primeNumberGenerator.generate(3, 1);
-
-        assertThat(actual.size()).isEqualTo(3);
-        assertThat(actual.get(0)).isEqualTo(1);
-        assertThat(actual.get(1)).isEqualTo(2);
-        assertThat(actual.get(2)).isEqualTo(3);
+        assertContainsValuesInOrder(actual, 1, 2, 3);
     }
 
+    private void assertContainsValuesInOrder(List<Integer> tested, Integer... values) {
+        assertThat(tested.size()).isEqualTo(values.length);
+        for(int i = 0; i < tested.size(); i++) {
+            assertThat(tested.get(i)).isEqualTo(values[i]);
+        }
+    }
+
+    private void assertContainsValues(List<Integer> tested, Integer... values) {
+        assertThat(tested.size()).isEqualTo(values.length);
+        for(Integer value : values) {
+            assertThat(tested).contains(value);
+        }
+    }
 
     private void returnTrueForAllIsPrimeCalls() {
         new NonStrictExpectations() {{
