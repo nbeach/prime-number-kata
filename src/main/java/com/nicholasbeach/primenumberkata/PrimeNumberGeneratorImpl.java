@@ -10,6 +10,12 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
     @Override
     public List<Integer> generate(int startingValue, int endingValue) {
+        if(startingValue > endingValue) {
+            int start = startingValue;
+            startingValue = endingValue;
+            endingValue = start;
+        }
+
         return IntStream
             .range(startingValue, endingValue + 1)
             .parallel()

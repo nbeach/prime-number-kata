@@ -56,10 +56,7 @@ public class PrimeNumberGeneratorImplTest {
 
     @Test
     public void generate_returnsPrimesInOrder() {
-        new NonStrictExpectations() {{
-            primes.isPrime(anyInt);
-            result = true;
-        }};
+        returnTrueForAllIsPrimeCalls();
 
         List<Integer> actual = primeNumberGenerator.generate(1, 3);
 
@@ -67,6 +64,26 @@ public class PrimeNumberGeneratorImplTest {
         assertThat(actual.get(0)).isEqualTo(1);
         assertThat(actual.get(1)).isEqualTo(2);
         assertThat(actual.get(2)).isEqualTo(3);
+    }
+
+    @Test
+    public void generate_acceptsReverseRanges() {
+        returnTrueForAllIsPrimeCalls();
+
+        List<Integer> actual = primeNumberGenerator.generate(3, 1);
+
+        assertThat(actual.size()).isEqualTo(3);
+        assertThat(actual).contains(1);
+        assertThat(actual).contains(2);
+        assertThat(actual).contains(3);
+    }
+
+
+    private void returnTrueForAllIsPrimeCalls() {
+        new NonStrictExpectations() {{
+            primes.isPrime(anyInt);
+            result = true;
+        }};
     }
 
 }
