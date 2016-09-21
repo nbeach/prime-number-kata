@@ -2,16 +2,19 @@ package com.nicholasbeach.primenumberkata;
 
 import mockit.Expectations;
 import mockit.Mocked;
+import mockit.NonStrictExpectations;
 import mockit.Tested;
 import org.apache.commons.math3.primes.Primes;
 import org.junit.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class PrimeNumberGeneratorImplTest {
 
     @Tested
-    private com.nicholasbeach.primenumberkata.PrimeNumberGeneratorImpl primeNumberGenerator;
+    private PrimeNumberGeneratorImpl primeNumberGenerator;
 
     @Mocked
     private Primes primes;
@@ -28,6 +31,27 @@ public class PrimeNumberGeneratorImplTest {
 
         boolean actual = primeNumberGenerator.isPrime(input);
         assertThat(actual).isEqualTo(expected);
+    }
+
+
+    @Test
+    public void generate_returnsOnlyPrimes() {
+        new NonStrictExpectations() {{
+            primes.isPrime(1);
+            result = true;
+
+            primes.isPrime(2);
+            result = false;
+
+            primes.isPrime(3);
+            result = true;
+        }};
+
+        List<Integer> actual = primeNumberGenerator.generate(1, 3);
+
+        assertThat(actual.size()).isEqualTo(2);
+        assertThat(actual).contains(1);
+        assertThat(actual).contains(3);
     }
 
 }
