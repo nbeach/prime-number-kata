@@ -19,8 +19,8 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
         return IntStream
             .range(startingValue, endingValue + 1)
             .parallel()
-            .boxed()
             .filter(this::isPrime)
+            .boxed()
             .collect(Collectors.toList());
     }
 
